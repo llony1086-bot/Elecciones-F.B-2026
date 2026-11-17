@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elecciones Municipio Escolar 2026 - I.E. Francisco Bolognesi N° 0759</title>
+    <style>
+        :root {
+            --color-fede-dark: #065f46;
+            --color-fede-main: #059669;
+            --color-fede-light: #d1fae5;
+            --color-meb-blue: #1e3a8a;
+            --color-meb-red: #dc2626;
+            --color-meb-light: #eff6ff;
+            --gold-accent: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
+            position: relative;
+            overflow-x: hidden;
+            padding: 16px;
+        }
+
+        /* Marca de agua central de la I.E. */
+        .watermark-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 520px;
+            max-width: 85vw;
+            opacity: 0.16;
+            pointer-events: none;
+            z-index: 0;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Encabezado Institucional */
+        header {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 20px 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header-crest {
+            width: 82px;
+            height: 82px;
+            flex-shrink: 0;
+        }
+
+        .header-titles h2 {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #b91c1c;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .header-titles h1 {
+            font-size: clamp(1.35rem, 3vw, 2.05rem);
+            color: #0f172a;
+            font-weight: 900;
+            line-height: 1.15;
+        }
+
+        .header-titles p {
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Reproductor de Spot Publicitario MP3 */
+        .audio-banner {
+            background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 14px 22px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+            border: 1px solid #334155;
+        }
+
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .audio-icon {
+            background: #f59e0b;
+            color: #0f172a;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            justify-content: flex-end;
+        }
+
+        audio {
+            height: 38px;
+            max-width: 340px;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .audio-status-msg {
+            font-size: 0.8rem;
+            color: #fbbf24;
+            display: none;
+        }
+
+        /* Cronómetro Cuenta Regresiva */
+        .countdown-section {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 18px 24px;
+            margin-bottom: 22px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e2e8f0;
+        }
+
+        .countdown-label {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1e3a8a;
+            margin-bottom: 12px;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(68px, 120px));
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .time-box {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 14px;
+            padding: 12px 8px;
+            box-shadow: 0 6px 12px rgba(15, 23, 42, 0.18);
+            border-bottom: 4px solid #f59e0b;
+        }
+
+        .time-value {
+            font-size: clamp(1.6rem, 4vw, 2.35rem);
+            font-weight: 900;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            color: #fbbf24;
+        }
+
+        .time-unit {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            margin-top: 6px;
+            font-weight: 700;
+        }
+
+        /* Barra de Resultados Globales en Vivo */
+        .results-bar-card {
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 2px solid #cbd5e1;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 999px;
+            text-transform: uppercase;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #dc2626;
+            border-radius: 50%;
+            animation: blink 1.2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 28px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.12);
+        }
+
+        .progress-fede {
+            background: linear-gradient(90deg, #059669, #10b981);
+            height: 100%;
+            width: 50%;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 12px;
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .progress-meb {
+            background: linear-gradient(90deg, #2563eb, #dc2626);
+            height: 100%;
+            width: 50%;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de Candidatos */
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+
+        .candidate-card {
+            border-radius: 22px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 34px -6px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Color de fondo Lista 1 (FEDE) */
+        .card-lista-1 {
+            background: linear-gradient(145deg, rgba(209, 250, 229, 0.94) 0%, rgba(167, 243, 208, 0.92) 100%);
+            border: 3px solid #059669;
+        }
+
+        /* Color de fondo Lista 2 (MEB) */
+        .card-lista-2 {
+            background: linear-gradient(145deg, rgba(219, 234, 254, 0.94) 0%, rgba(254, 226, 226, 0.92) 100%);
+            border: 3px solid #1d4ed8;
+        }
+
+        .list-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 999px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .card-lista-1 .list-badge {
+            background: linear-gradient(90deg, #065f46, #059669);
+        }
+
+        .card-lista-2 .list-badge {
+            background: linear-gradient(90deg, #1e3a8a, #dc2626);
+        }
+
+        .visuals-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 16px;
+        }
+
+        .party-symbol {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+            padding: 6px;
+            flex-shrink: 0;
+        }
+
+        .candidate-avatar {
+            width: 112px;
+            height: 124px;
+            border-radius: 14px;
+            background: white;
+            border: 3px solid #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .party-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .party-motto {
+            font-size: 0.9rem;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .vote-stats {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .stat-num {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        .vote-btn {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-fede {
+            background: linear-gradient(90deg, #065f46, #059669);
+        }
+
+        .btn-fede:hover:not(:disabled) {
+            background: linear-gradient(90deg, #047857, #10b981);
+            transform: scale(1.02);
+        }
+
+        .btn-meb {
+            background: linear-gradient(90deg, #1e3a8a, #dc2626);
+        }
+
+        .btn-meb:hover:not(:disabled) {
+            background: linear-gradient(90deg, #1d4ed8, #ef4444);
+            transform: scale(1.02);
+        }
+
+        .vote-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .voted-notice {
+            text-align: center;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #f59e0b;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            margin-bottom: 18px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #475569;
+            padding: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                padding: 16px;
+            }
+            .header-crest {
+                width: 68px;
+                height: 68px;
+            }
+            .audio-banner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .audio-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Insignia Institucional reutilizable -->
+    <svg style="display:none;">
+        <symbol id="ie-crest" viewBox="0 0 200 220">
+            <path d="M20,20 L180,20 L180,115 C180,165 100,205 100,205 C100,205 20,165 20,115 Z" fill="#b91c1c" stroke="#f59e0b" stroke-width="8"/>
+            <path d="M32,32 L168,32 L168,112 C168,154 100,190 100,190 C100,190 32,154 32,112 Z" fill="#ffffff"/>
+            <path d="M32,32 L168,32 L168,68 L32,68 Z" fill="#1e3a8a"/>
+            <text x="100" y="55" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="900" font-family="sans-serif">I.E. N° 0759</text>
+            <text x="100" y="92" text-anchor="middle" fill="#b91c1c" font-size="14" font-weight="900" font-family="sans-serif">FRANCISCO</text>
+            <text x="100" y="110" text-anchor="middle" fill="#b91c1c" font-size="14" font-weight="900" font-family="sans-serif">BOLOGNESI</text>
+            <!-- Antorcha y libro -->
+            <path d="M65,135 Q100,125 135,135 L130,155 Q100,145 70,155 Z" fill="#f59e0b"/>
+            <circle cx="100" cy="124" r="8" fill="#dc2626"/>
+            <text x="100" y="173" text-anchor="middle" fill="#1e3a8a" font-size="11" font-weight="800" font-family="sans-serif">LA LIBERTAD</text>
+        </symbol>
+    </svg>
+
+    <!-- Marca de agua central -->
+    <svg class="watermark-bg"><use href="#ie-crest"/></svg>
+
+    <div class="container">
+        <!-- Encabezado -->
+        <header>
+            <svg class="header-crest"><use href="#ie-crest"/></svg>
+            <div class="header-titles">
+                <h2>I.E. Francisco Bolognesi N° 0759 - La Libertad</h2>
+                <h1>ELECCIONES MUNICIPIO ESCOLAR 2026</h1>
+                <p>Jornada Electoral: Viernes 20 de Noviembre • Inicio: 8:00 a.m.</p>
+            </div>
+            <svg class="header-crest"><use href="#ie-crest"/></svg>
+        </header>
+
+        <!-- Reproductor Spot Publicitario MP3 -->
+        <div class="audio-banner">
+            <div class="audio-info">
+                <div class="audio-icon">🔊</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1rem;">Spot Oficial de las Elecciones Escolares</div>
+                    <div style="font-size: 0.82rem; color: #cbd5e1;">Presiona Play para escuchar el mensaje institucional</div>
+                    <div id="audioStatusMsg" class="audio-status-msg">⚠️ Sube tu archivo grabado como <strong>audio.mp3</strong> en GitHub para activarlo.</div>
+                </div>
+            </div>
+            <div class="audio-controls">
+                <audio id="promoAudio" controls preload="metadata">
+                    <source src="audio.mp3" type="audio/mpeg">
+                    Tu navegador no soporta el elemento de audio.
+                </audio>
+            </div>
+        </div>
+
+        <!-- Cronómetro Cuenta Regresiva -->
+        <section class="countdown-section">
+            <div class="countdown-label" id="countdownTitle">⏳ Tiempo restante para el inicio de las elecciones (20 Nov - 8:00 a.m.)</div>
+            <div class="timer-grid" id="timerGrid">
+                <div class="time-box">
+                    <div class="time-value" id="days">00</div>
+                    <div class="time-unit">Días</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-unit">Horas</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-unit">Minutos</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-unit">Segundos</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resultados Globales en Tiempo Real (Firebase) -->
+        <section class="results-bar-card">
+            <div class="results-header">
+                <div style="font-weight: 800; font-size: 1.05rem; color: #0f172a;">
+                    📊 Sondeo General de Intención de Voto (En Vivo)
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-weight: 800; font-size: 0.9rem; color: #334155;">Total votos: <span id="totalVotes">0</span></span>
+                    <span class="live-badge"><span class="live-dot"></span> Conectado</span>
+                </div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fede" id="barFede">Lista 1: 50%</div>
+                <div class="progress-meb" id="barMeb">Lista 2: 50%</div>
+            </div>
+        </section>
+
+        <!-- Aviso si el usuario ya votó -->
+        <div class="voted-notice" id="votedNotice">
+            ✅ ¡Gracias por participar! Tu intención de voto ya quedó registrada en el conteo general.
+        </div>
+
+        <!-- Tarjetas de las 2 Listas -->
+        <section class="candidates-grid">
+            <!-- LISTA N° 1 -->
+            <div class="candidate-card card-lista-1">
+                <div class="list-badge">LISTA N° 1</div>
+                <div class="visuals-row">
+                    <!-- Símbolo FEDE -->
+                    <div class="party-symbol">
+                        <svg viewBox="0 0 120 120" width="94" height="94">
+                            <circle cx="60" cy="60" r="54" fill="#d1fae5" stroke="#065f46" stroke-width="5"/>
+                            <circle cx="60" cy="60" r="36" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+                            <text x="60" y="36" text-anchor="middle" fill="#065f46" font-size="11" font-weight="900">FEDE</text>
+                            <!-- Silueta estudiante -->
+                            <circle cx="60" cy="52" r="7" fill="#065f46"/>
+                            <path d="M47,76 C47,63 73,63 73,76 Z" fill="#065f46"/>
+                            <text x="60" y="103" text-anchor="middle" fill="#065f46" font-size="8" font-weight="800">DEMOCRACIA</text>
+                        </svg>
+                    </div>
+                    <!-- Candidato Lista 1 -->
+                    <div class="candidate-avatar">
+                        <svg viewBox="0 0 100 110" width="95" height="105">
+                            <rect width="100" height="110" fill="#f1f5f9"/>
+                            <circle cx="50" cy="40" r="20" fill="#d9a077"/>
+                            <path d="M30,35 Q50,15 70,35 Q68,20 50,20 Q32,20 30,35 Z" fill="#1e293b"/>
+                            <path d="M20,110 C20,72 80,72 80,110 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                            <polygon points="46,72 54,72 52,98 48,98" fill="#1e3a8a"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="party-name">Fuerza Estudiantil Democrática (FEDE)</div>
+                <div class="party-motto">"Compromiso, identidad y acción por nuestra I.E."</div>
+
+                <div class="vote-stats">
+                    <div>
+                        <div class="stat-num" id="votesLista1">0</div>
+                        <div class="stat-label">Votos Globales</div>
+                    </div>
+                    <div style="width: 1px; height: 34px; background: #cbd5e1;"></div>
+                    <div>
+                        <div class="stat-num" id="pctLista1" style="color: #059669;">0%</div>
+                        <div class="stat-label">Porcentaje</div>
+                    </div>
+                </div>
+
+                <button class="vote-btn btn-fede" id="btnVote1" onclick="castVote('lista1')">
+                    🗳️ Votar por LISTA N° 1
+                </button>
+            </div>
+
+            <!-- LISTA N° 2 -->
+            <div class="candidate-card card-lista-2">
+                <div class="list-badge">LISTA N° 2</div>
+                <div class="visuals-row">
+                    <!-- Símbolo MEB -->
+                    <div class="party-symbol">
+                        <svg viewBox="0 0 120 120" width="94" height="94">
+                            <circle cx="60" cy="60" r="54" fill="#ffffff" stroke="#1e3a8a" stroke-width="5"/>
+                            <!-- Foco / Idea MEB -->
+                            <path d="M44,58 C44,40 76,40 76,58 C76,68 68,73 68,80 L52,80 C52,73 44,68 44,58 Z" fill="#fef08a" stroke="#dc2626" stroke-width="3"/>
+                            <rect x="53" y="82" width="14" height="7" rx="2" fill="#1e3a8a"/>
+                            <text x="60" y="64" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="900">MEB</text>
+                            <line x1="60" y1="24" x2="60" y2="32" stroke="#dc2626" stroke-width="3"/>
+                            <line x1="34" y1="36" x2="40" y2="42" stroke="#dc2626" stroke-width="3"/>
+                            <line x1="86" y1="36" x2="80" y2="42" stroke="#dc2626" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <!-- Candidata Lista 2 -->
+                    <div class="candidate-avatar">
+                        <svg viewBox="0 0 100 110" width="95" height="105">
+                            <rect width="100" height="110" fill="#f1f5f9"/>
+                            <path d="M26,45 Q26,18 50,18 Q74,18 74,45 L76,78 L24,78 Z" fill="#1e293b"/>
+                            <circle cx="50" cy="42" r="19" fill="#e0ac84"/>
+                            <path d="M20,110 C20,72 80,72 80,110 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                            <polygon points="46,72 54,72 52,96 48,96" fill="#dc2626"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="party-name">Movimiento Estudiantil Bolognesino (MEB)</div>
+                <div class="party-motto">"Nuevas ideas y participación para todos"</div>
+
+                <div class="vote-stats">
+                    <div>
+                        <div class="stat-num" id="votesLista2">0</div>
+                        <div class="stat-label">Votos Globales</div>
+                    </div>
+                    <div style="width: 1px; height: 34px; background: #cbd5e1;"></div>
+                    <div>
+                        <div class="stat-num" id="pctLista2" style="color: #1d4ed8;">0%</div>
+                        <div class="stat-label">Porcentaje</div>
+                    </div>
+                </div>
+
+                <button class="vote-btn btn-meb" id="btnVote2" onclick="castVote('lista2')">
+                    🗳️ Votar por LISTA N° 2
+                </button>
+            </div>
+        </section>
+
+        <footer>
+            Comité Electoral Escolar 2026 • I.E. Francisco Bolognesi N° 0759 - La Libertad
+        </footer>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. CONFIGURACIÓN DE FIREBASE REALTIME DB
+        // ==========================================
+        const DB_URL = "https://elecciones---bolognesi-2026-default-rtdb.firebaseio.com/votos.json";
+        const STORAGE_KEY = "bolognesi_2026_ya_voto";
+
+        let currentVotes = { lista1: 0, lista2: 0 };
+
+        function updateUI(v1, v2) {
+            const total = v1 + v2;
+            const pct1 = total === 0 ? 0 : Math.round((v1 / total) * 100);
+            const pct2 = total === 0 ? 0 : (100 - pct1);
+
+            document.getElementById("votesLista1").textContent = v1;
+            document.getElementById("votesLista2").textContent = v2;
+            document.getElementById("pctLista1").textContent = pct1 + "%";
+            document.getElementById("pctLista2").textContent = pct2 + "%";
+            document.getElementById("totalVotes").textContent = total;
+
+            const bar1Width = total === 0 ? 50 : Math.max(12, Math.min(88, pct1));
+            const bar2Width = 100 - bar1Width;
+
+            const barFede = document.getElementById("barFede");
+            const barMeb = document.getElementById("barMeb");
+            barFede.style.width = bar1Width + "%";
+            barMeb.style.width = bar2Width + "%";
+            barFede.textContent = `Lista 1: ${pct1}%`;
+            barMeb.textContent = `Lista 2: ${pct2}%`;
+        }
+
+        async function fetchVotes() {
+            try {
+                const res = await fetch(DB_URL);
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data) {
+                    currentVotes.lista1 = Number(data.lista1) || 0;
+                    currentVotes.lista2 = Number(data.lista2) || 0;
+                }
+                updateUI(currentVotes.lista1, currentVotes.lista2);
+            } catch (err) {
+                console.error("Error leyendo votos:", err);
+            }
+        }
+
+        async function castVote(lista) {
+            if (localStorage.getItem(STORAGE_KEY)) {
+                alert("Ya has registrado tu intención de voto desde este dispositivo.");
+                return;
+            }
+
+            const btn1 = document.getElementById("btnVote1");
+            const btn2 = document.getElementById("btnVote2");
+            btn1.disabled = true;
+            btn2.disabled = true;
+
+            try {
+                // Leer valor más reciente antes de sumar
+                const res = await fetch(DB_URL);
+                const latest = (await res.json()) || { lista1: 0, lista2: 0 };
+
+                const updated = {
+                    lista1: (Number(latest.lista1) || 0) + (lista === "lista1" ? 1 : 0),
+                    lista2: (Number(latest.lista2) || 0) + (lista === "lista2" ? 1 : 0)
+                };
+
+                const putRes = await fetch(DB_URL, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updated)
+                });
+
+                if (putRes.ok) {
+                    localStorage.setItem(STORAGE_KEY, lista);
+                    currentVotes = updated;
+                    updateUI(updated.lista1, updated.lista2);
+                    document.getElementById("votedNotice").style.display = "block";
+                } else {
+                    alert("No se pudo guardar el voto. Verifica que las reglas de Firebase estén en modo de prueba.");
+                    btn1.disabled = false;
+                    btn2.disabled = false;
+                }
+            } catch (err) {
+                alert("Error de conexión al registrar el voto.");
+                btn1.disabled = false;
+                btn2.disabled = false;
+            }
+        }
+
+        // Verificar si el navegador ya votó
+        if (localStorage.getItem(STORAGE_KEY)) {
+            document.getElementById("btnVote1").disabled = true;
+            document.getElementById("btnVote2").disabled = true;
+            document.getElementById("votedNotice").style.display = "block";
+        }
+
+        // Cargar votos al iniciar y actualizar cada 4 segundos
+        fetchVotes();
+        setInterval(fetchVotes, 4000);
+
+        // ==========================================
+        // 2. CRONÓMETRO: 20 DE NOVIEMBRE 2026 - 8:00 AM
+        // ==========================================
+        const targetDate = new Date(2026, 10, 20, 8, 0, 0).getTime(); // Mes 10 = Noviembre
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance <= 0) {
+                document.getElementById("countdownTitle").textContent = "🎉 ¡JORNADA ELECTORAL EN CURSO! (20 de Noviembre)";
+                document.getElementById("days").textContent = "00";
+                document.getElementById("hours").textContent = "00";
+                document.getElementById("minutes").textContent = "00";
+                document.getElementById("seconds").textContent = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = String(days).padStart(2, "0");
+            document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+            document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+            document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // ==========================================
+        // 3. VERIFICACIÓN DE ARCHIVO DE AUDIO MP3
+        // ==========================================
+        const audioEl = document.getElementById("promoAudio");
+        audioEl.addEventListener("error", () => {
+            document.getElementById("audioStatusMsg").style.display = "block";
+        }, true);
+    </script>
+</body>
+</html>

@@ -666,7 +666,14 @@
 
         <div class="admin-tools">
           <button class="btn-tool btn-sim" id="btnSimToggle" onclick="toggleSimMode()">🧪 Probar votación ahora</button>
-          <button class="btn-tool btn-reset" onclick="resetVotes()">🗑️ Reiniciar urnas a 0</button>
+          <button class="btn-tool btn-reset" onclick="resetVotes()"><!-- Pega este botón justo encima del botón "Reiniciar urnas a 0" -->
+<button onclick="enableNextVoter()" style="background:#16a34a; color:#fff; border:none; padding:12px 16px; border-radius:8px; font-weight:bold; cursor:pointer; width:100%; margin-bottom:10px; font-size:15px;">
+  🔓 Habilitar siguiente elector (Sin borrar votos)
+</button><!-- Pega esto justo encima del botón "Reiniciar urnas a 0" -->
+<button onclick="enableNextVoter()" style="background:#16a34a; color:#fff; border:none; padding:12px 16px; border-radius:8px; font-weight:bold; cursor:pointer; width:100%; margin-bottom:10px; font-size:15px;">
+  🔓 Habilitar siguiente elector (Sin borrar votos)
+</button>
+🗑️ Reiniciar urnas a 0</button>
         </div>
       </div>
     </div>
@@ -789,31 +796,34 @@
     el.className = "feedback-msg " + (type === "success" ? "feedback-success" : "feedback-warn");
   }
 
-  async function submitVote() {
+     async function submitVote() {
     if (electionState !== "OPEN" || !selectedList || hasVotedLocal) return;
     const btn = document.getElementById("btnSubmitVote");
     btn.disabled = true;
     btn.textContent = "Registrando voto...";
 
     try {
+      // 1. Consulta el conteo actual en Firebase para no sobrescribir votos de la otra laptop
       const res = await fetch(DB_URL);
       let data = await res.json();
       if (!data) data = { lista1: 0, lista2: 0 };
 
-      if (selectedList === 1) data.lista1 = (data.lista1 || 0) + 1;
-      if (selectedList === 2) data.lista2 = (data.lista2 || 0) + 1;
+      const campoLista = selectedList === 1 ? "lista1" : "lista2";
+      const nuevoConteo = (data[campoLista] || 0) + 1;
 
+      // 2. PATCH actualiza SOLO la lista seleccionada, conservando el resto de la base de datos
       await fetch(DB_URL, {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ [campoLista]: nuevoConteo })
       });
 
+      // 3. Bloquea ÚNICAMENTE esta laptop
       hasVotedLocal = true;
       localStorage.setItem("bolognesi_2026_voted", "true");
       btn.textContent = "✅ VOTO REGISTRADO";
       updateClock();
-      showFeedback("🎉 ¡Tu voto por la Lista N° " + selectedList + " ha sido registrado con éxito!", "success");
+      showFeedback("🎉 ¡Tu voto por la Lista N° " + selectedList + " ha sido registrado con éxito! Espere al Comité Electoral.", "success");
     } catch (err) {
       btn.disabled = false;
       btn.textContent = "✅ EMITIR MI VOTO";
@@ -821,73 +831,41 @@
     }
   }
 
-  // Funciones Panel Comité Electoral
-  function openAdminModal() {
-    document.getElementById("adminModal").classList.add("active");
-    document.getElementById("pinInput").value = "";
-    document.getElementById("pinError").style.display = "none";
-    document.getElementById("pinStep").style.display = "block";
-    document.getElementById("resultsStep").style.display = "none";
-  }
-  function closeAdminModal() {
-    document.getElementById("adminModal").classList.remove("active");
-  }
-  function checkPin() {
-    const val = document.getElementById("pinInput").value.trim();
-    if (val === ADMIN_PIN) {
-      document.getElementById("pinStep").style.display = "none";
-      document.getElementById("resultsStep").style.display = "block";
-      loadResults();
-    } else {
-      document.getElementById("pinError").style.display = "block";
-    }
-  }
-
-  async function loadResults() {
-    try {
-      const res = await fetch(DB_URL);
-      const data = (await res.json()) || { lista1: 0, lista2: 0 };
-      const v1 = data.lista1 || 0;
-      const v2 = data.lista2 || 0;
-      const total = v1 + v2;
-      const p1 = total > 0 ? ((v1 / total) * 100).toFixed(1) : 0;
-      const p2 = total > 0 ? ((v2 / total) * 100).toFixed(1) : 0;
-
-      document.getElementById("resL1Text").textContent = `${v1} votos (${p1}%)`;
-      document.getElementById("resL2Text").textContent = `${v2} votos (${p2}%)`;
-      document.getElementById("barL1").style.width = p1 + "%";
-      document.getElementById("barL2").style.width = p2 + "%";
-      document.getElementById("resTotal").textContent = total;
-    } catch (e) {
-      document.getElementById("resTotal").textContent = "Error al cargar";
-    }
-  }
-
-  function toggleSimMode() {
-    simOpenMode = !simOpenMode;
-    const btn = document.getElementById("btnSimToggle");
-    btn.textContent = simOpenMode ? "⏹️ Detener modo ensayo" : "🧪 Probar votación ahora";
-    updateClock();
-  }
-
-  async function resetVotes() {
-    if (!confirm("¿Estás seguro de reiniciar todos los votos a 0 en la base de datos?")) return;
-    await fetch(DB_URL, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lista1: 0, lista2: 0 })
-    });
+  // NUEVA FUNCIÓN: Desbloquea únicamente la laptop actual sin tocar Firebase
+  function enableNextVoter() {
     localStorage.removeItem("bolognesi_2026_voted");
     hasVotedLocal = false;
     selectedList = null;
+
     document.getElementById("cardLista1").classList.remove("selected");
     document.getElementById("cardLista2").classList.remove("selected");
-    document.getElementById("feedbackMsg").style.display = "none";
-    document.getElementById("btnSubmitVote").textContent = "✅ EMITIR MI VOTO";
+
+    const btn = document.getElementById("btnSubmitVote");
+    btn.textContent = "✅ EMITIR MI VOTO";
+    btn.disabled = true;
+
+    const fb = document.getElementById("feedbackMsg");
+    fb.textContent = "";
+    fb.className = "feedback-msg";
+
     updateClock();
-    loadResults();
-    alert("Urnas reiniciadas correctamente a 0.");
+    closeAdminModal();
   }
-</script>
-</body>
-</html>
+    localStorage.removeItem("bolognesi_2026_voted");
+    hasVotedLocal = false;
+    selectedList = null;
+
+    document.getElementById("cardLista1").classList.remove("selected");
+    document.getElementById("cardLista2").classList.remove("selected");
+
+    const btn = document.getElementById("btnSubmitVote");
+    btn.textContent = "✅ EMITIR MI VOTO";
+    btn.disabled = true;
+
+    const fb = document.getElementById("feedbackMsg");
+    fb.textContent = "";
+    fb.className = "feedback-msg";
+
+    updateClock();
+    closeAdminModal();
+  }
